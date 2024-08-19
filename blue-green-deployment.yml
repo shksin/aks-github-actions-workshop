@@ -1,0 +1,41 @@
+
+name: Blue-Green Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Set up Kubernetes tools
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+
+    - name: Get AKS credentials
+      run: |
+        az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+
+    - name: Deploy to Blue environment
+      run: |
+        helm upgrade --install myapp-blue ./myapp --namespace blue --set app.image.tag=${{ github.sha }}
+
+    - name: Deploy to Green environment
+      run: |
+        helm upgrade --install myapp-green ./myapp --namespace green --set app.image.tag=${{ github.sha }}
+
+    - name: Switch traffic to Green environment
+      run: |
+        kubectl patch ingress myapp-ingress -p '{"spec":{"rules":[{"host":"myapp.example.com","http":{"paths":[{"path":"/","pathType":"Prefix","backend":{"service":{"name":"myapp-green","port":{"number":80}}}}]}}]}}'
