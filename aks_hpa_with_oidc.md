@@ -1,6 +1,3 @@
-Here is the updated step-by-step document using the new OpenID Connect (OIDC) approach and the `@azure/k8s-deploy` GitHub Action for scaling a deployed app using Horizontal Pod Autoscaler (HPA) in Azure Kubernetes Service (AKS):
-
----
 
 # Lab: Scaling a Deployed App Using Horizontal Pod Autoscaler (HPA) with GitHub Actions using OIDC and `@azure/k8s-deploy`
 
