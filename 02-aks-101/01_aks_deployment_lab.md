@@ -1,7 +1,3 @@
-Here's the updated document that uses the OpenID Connect (OIDC) approach for deploying an AKS cluster using GitHub Actions:
-
----
-
 # Lab: Deploying an AKS Cluster using GitHub Actions with OpenID Connect (OIDC)
 
 ## Objective:
