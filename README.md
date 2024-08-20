@@ -14,7 +14,7 @@ This is introduction level (101) workshop for those of you who have never worked
  * Take a simple dotnet api application and build it into a docker container
  * Build and test container locally using docker desktop
 
- ## [Workshop #3 - GitOps with AKS and GitHub Actions 101](03-aks-and-gh-actions-101/readme.md)
+ ## [Workshop #3 - Application Deployment in AKS and GitHub Actions 101](03-aks-and-gh-actions-101/readme.md)
 
 This workshop covers the basics of Azure Kubernetes Service and you will cover the basic of GitOps in AKS using GitHub Actions. You will learn how to:  
  * Deploy application in the cluster
