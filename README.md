@@ -21,6 +21,13 @@ This workshop covers the basics of Azure Kubernetes Service and make you familia
  * Deploy the application in the cluster
  * Modify application and deploy using Blue Green Methodology
 
+## [Workshop #4 (Optional) - Advanced AKS Scenarios with GitHub Actions](04-advanced-aks-labs/readme.md) 
+This workshop covers the advanced scenarios of AKS with GitHub Actions. Each of the scenarios are independent and can be completed without any dependancy on each other. In this workshop you will learn how to: 
+    * Create an Azure Container Registry, Push an Image to It, and Deploy an App to AKS Using GitHub Actions
+    * Integrate Azure Key Vault with AKS Using GitHub Actions
+    * Package and Deploy an App using Helm with GitHub Actions
+    * Scale a Deployed App Using Horizontal Pod Autoscaler (HPA) with GitHub Actions using OIDC
+
  
 
- The workshops consists of 5 labs and estimated time is about 2 hours.
+ The workshops consists of 8 labs (4 Basic and 4 advanced) and estimated time is 2 hours.
