@@ -1,4 +1,4 @@
-# aks-github-actions-workshop
+# AKS with GitHub Actions Workshop
 
 ## [Workshop #1 - GitHub Actions 101](01-gh-actions-101/readme.md)
 
