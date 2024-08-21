@@ -15,7 +15,7 @@ This is introduction level (101) workshop for those of you who have never worked
  * Containerize a .NET Application
  * Build and test container locally using Docker Desktop
 
- ## [Workshop #3 - Application Deployment in AKS and GitHub Actions 101](03-app-deploy-aks-gh-actions/readme.md)
+ ## [Workshop #3 - Application Deployment in AKS using GitHub Actions](03-app-deploy-aks-gh-actions/readme.md)
 
 This workshop covers the basics of Azure Kubernetes Service and make you familiar with using GitHub Actions for AKS deployments. You will learn how to:  
  * Deploy the application in the cluster
