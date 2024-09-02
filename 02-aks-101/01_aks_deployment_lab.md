@@ -1,60 +1,33 @@
-# Lab: Deploying an AKS Cluster using GitHub Actions with OpenID Connect (OIDC)
+# Lab2: Deploying an AKS Cluster using GitHub Actions with OpenID Connect (OIDC)
 
 ## Objective:
 This lab will guide you through the process of deploying an Azure Kubernetes Service (AKS) cluster using GitHub Actions with OpenID Connect (OIDC) for authentication. By the end of this lab, you'll have an AKS cluster deployed and managed via a CI/CD pipeline on GitHub Actions.
 
 ## Prerequisites:
-1. **Azure Account**: Ensure you have an active Azure subscription.
-2. **GitHub Account**: You should have a GitHub account with a repository ready to use.
-3. **Azure CLI**: Installed and configured on your local machine.
-4. **Kubectl**: Installed on your local machine.
-5. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax.
+1. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax. Ensure you have completed [Lab0-GitHub Actions 101](../01-gh-actions-101/readme.md) and have established successful connectivity between GitHub Actions and Azure.
+**Azure CLI**: Installed and configured on your local machine. [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+**Kubectl**: Installed on your local machine.
 
 ---
 
-## Step 1: Prepare for Azure Authentication using OIDC
+## Step 1: Clone the GitHub Repository to Your Local Machine
 
-Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure without needing to store long-lived cloud secrets.
-
-### Azure Setup:
-1. **Create an Azure AD App Registration** (If you don't already have one):
-   - In the Azure portal, navigate to "Azure Active Directory" > "App registrations" > "New registration".
-   - Name your application (e.g., `GitHubActions-Deployment`), and register it.
-   - Note the **Client ID** and **Tenant ID**; you'll need these later.
-
-2. **Configure API Permissions**:
-   - In the App Registration, go to "API permissions" > "Add a permission".
-   - Select "Azure Service Management" > "Delegated permissions" > Select "user_impersonation" and add it.
-   - Grant admin consent for your organization.
-
-3. **Assign RBAC Roles**:
-   - Assign the necessary Azure roles (e.g., Contributor) to the service principal created by the app registration.
-   - This can be done using the Azure portal or via Azure CLI:
-     ```bash
-     az role assignment create --assignee <CLIENT_ID> --role Contributor --scope /subscriptions/YOUR_SUBSCRIPTION_ID
-     ```
-   - Replace `<CLIENT_ID>` with your App Registration's Client ID and `YOUR_SUBSCRIPTION_ID` with your Azure subscription ID.
-
-### GitHub Setup:
-1. **Add GitHub Secrets**:
-   - Navigate to your GitHub repository.
-   - Go to "Settings" > "Secrets and variables" > "Actions".
-   - Add the following secrets:
-     - `AZURE_CLIENT_ID`: Your Azure App Registration's Client ID.
-     - `AZURE_TENANT_ID`: Your Azure Tenant ID.
-     - `AZURE_SUBSCRIPTION_ID`: Your Azure Subscription ID.
+1. **Clone the repository** to your local machine:
+   ```bash
+   git clone <url of your repository>
 
 ## Step 2: Create a GitHub Actions Workflow File
 
 1. **In your repository**, create a directory for GitHub Actions workflows:
    ```bash
    mkdir -p .github/workflows
-   ```
 
 2. **Create a new YAML file**:
    ```bash
    touch .github/workflows/deploy-aks.yml
    ```
+    *Alternatively, you can create the file manually in the  cloned folder.*
+
 
 3. **Edit the YAML file** with the following content:
 
@@ -69,6 +42,11 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
    permissions:
      id-token: write # Required for OIDC authentication
      contents: read # Required to read repository contents
+
+   env:
+      RESOURCE_GROUP: myResourceGroup
+      AKS_CLUSTER_NAME: myAKSCluster
+      LOCATION: australiaeast
 
    jobs:
      build:
@@ -98,29 +76,29 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
 
        - name: Create Resource Group
          run: |
-           az group create --name myResourceGroup --location eastus
+           az group create --name $RESOURCE_GROUP --location $LOCATION
 
        - name: Create AKS Cluster
          run: |
-           az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
+           az aks create --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME --node-count 1 --enable-addons monitoring --generate-ssh-keys
 
        - name: Get AKS Credentials
          run: |
-           az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+           az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
 
        - name: Deploy to AKS
          run: |
            kubectl apply -f k8s/deployment.yml
    ```
 
-4. **Replace placeholders**:
-   - Replace `myResourceGroup` with your desired resource group name.
-   - Replace `myAKSCluster` with your desired AKS cluster name.
-   - Ensure that the `k8s/deployment.yml` file path exists in your repository.
+      > **Note:** Replace `myResourceGroup` with your desired resource group name.
+      Replace `myAKSCluster` with your desired AKS cluster name.
+      Provide the correct `LOCATION` for your Azure region.
+
 
 ## Step 3: Create Kubernetes Deployment Manifest
 
-1. **In your repository**, create a directory for Kubernetes manifests:
+1. **In the root folder of your repository**, create a directory for Kubernetes manifests. Let's call it `k8s`:
    ```bash
    mkdir -p k8s
    ```
@@ -168,14 +146,26 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
    - Watch the workflow as it runs, which will create the AKS cluster and deploy the application.
 
 ## Step 5: Verify the Deployment
+1. **Login to Azure**:
+   - Run the following command to login to Azure:
+     ```bash
+     az login
+     ```
 
-1. **Access the AKS Cluster**:
+2. **Get the AKS Cluster Credentials**:
+   - Run the following command to get the AKS cluster credentials:
+     ```bash
+     az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+     ```
+     > **Note:** Replace `myResourceGroup` with the    correct resource group name .
+      Replace `myAKSCluster` with the correct AKS cluster name.
+3. **Access the AKS Cluster**:
    - Run the following command to ensure you have the correct context:
      ```bash
      kubectl get nodes
      ```
 
-2. **Verify the Deployment**:
+4. **Verify the Deployment**:
    - Check the status of your deployment:
      ```bash
      kubectl get deployments
@@ -196,7 +186,7 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
 
 1. **Delete the Resource Group** (if no longer needed):
    ```bash
-   az group delete --name myResourceGroup --yes --no-wait
+   az group delete --name $RESOURCE_GROUP --yes --no-wait
    ```
 
 ---
