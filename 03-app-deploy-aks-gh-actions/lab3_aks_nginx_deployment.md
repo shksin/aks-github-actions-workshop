@@ -1,56 +1,18 @@
-Here's a step-by-step document on how to deploy an Nginx application to an Azure Kubernetes Service (AKS) cluster using the `@azure/k8s-deploy` GitHub Action:
-
----
-
-# Lab: Deploying Nginx to AKS using GitHub Actions with `@azure/k8s-deploy`
+# Lab3: Deploying Nginx to AKS using GitHub Actions with `@azure/k8s-deploy`
 
 ## Objective:
 This lab will guide you through the process of deploying an Nginx application to an Azure Kubernetes Service (AKS) cluster using GitHub Actions. The deployment will utilize the `@azure/k8s-deploy` GitHub Action for streamlined Kubernetes deployments.
 
 ## Prerequisites:
-1. **Azure Account**: Ensure you have an active Azure subscription.
-2. **GitHub Account**: You should have a GitHub account with a repository ready to use.
-3. **Azure CLI**: Installed and configured on your local machine.
-4. **Kubectl**: Installed on your local machine.
-5. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax.
+1. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax. Ensure you have completed [Lab0-GitHub Actions 101](../01-gh-actions-101/readme.md) and have established successful connectivity between GitHub Actions and Azure.
+**Azure CLI**: Installed and configured on your local machine. [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+**Kubectl**: Installed on your local machine. [How to install the Kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ---
 
-## Step 1: Prepare for Azure Authentication using OIDC
+## Step 1: Create a Kubernetes Deployment Manifest for Nginx
 
-Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure without needing to store long-lived cloud secrets.
-
-### Azure Setup:
-1. **Create an Azure AD App Registration** (If you don't already have one):
-   - In the Azure portal, navigate to "Azure Active Directory" > "App registrations" > "New registration".
-   - Name your application (e.g., `GitHubActions-Deployment`), and register it.
-   - Note the **Client ID** and **Tenant ID**; you'll need these later.
-
-2. **Configure API Permissions**:
-   - In the App Registration, go to "API permissions" > "Add a permission".
-   - Select "Azure Service Management" > "Delegated permissions" > Select "user_impersonation" and add it.
-   - Grant admin consent for your organization.
-
-3. **Assign RBAC Roles**:
-   - Assign the necessary Azure roles (e.g., Contributor) to the service principal created by the app registration.
-   - This can be done using the Azure portal or via Azure CLI:
-     ```bash
-     az role assignment create --assignee <CLIENT_ID> --role Contributor --scope /subscriptions/YOUR_SUBSCRIPTION_ID
-     ```
-   - Replace `<CLIENT_ID>` with your App Registration's Client ID and `YOUR_SUBSCRIPTION_ID` with your Azure subscription ID.
-
-### GitHub Setup:
-1. **Add GitHub Secrets**:
-   - Navigate to your GitHub repository.
-   - Go to "Settings" > "Secrets and variables" > "Actions".
-   - Add the following secrets:
-     - `AZURE_CLIENT_ID`: Your Azure App Registration's Client ID.
-     - `AZURE_TENANT_ID`: Your Azure Tenant ID.
-     - `AZURE_SUBSCRIPTION_ID`: Your Azure Subscription ID.
-
-## Step 2: Create a Kubernetes Deployment Manifest for Nginx
-
-1. **In your repository**, create a directory for Kubernetes manifests:
+1. **In your repository**, create a directory for Kubernetes manifests called `k8s` if it doesn't already exist.
    ```bash
    mkdir -p k8s
    ```
@@ -108,16 +70,13 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
 
 ## Step 3: Create a GitHub Actions Workflow File
 
-1. **In your repository**, create a directory for GitHub Actions workflows:
-   ```bash
-   mkdir -p .github/workflows
-   ```
+1. **In your repository**, navigate to the `.github/workflows` directory: 
 
 2. **Create a new YAML file**:
    ```bash
    touch .github/workflows/deploy-nginx.yml
    ```
-
+    *Alternatively, you can create the file manually in the `.github/workflows` directory*
 3. **Edit the YAML file** with the following content:
 
    ```yaml
@@ -132,6 +91,10 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
      id-token: write # Required for OIDC authentication
      contents: read # Required to read repository contents
 
+   env:
+      RESOURCE_GROUP: myResourceGroup
+      AKS_CLUSTER_NAME: myAKSCluster
+   
    jobs:
      deploy:
        runs-on: ubuntu-latest
@@ -147,6 +110,13 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
            enable-AzPSSession: true
+
+       - name: Set AKS context
+         id: set-context
+         uses: azure/aks-set-context@v3
+         with:
+          resource-group: '${{ env.RESOURCE_GROUP }}' 
+          cluster-name: '${{ env.AKS_CLUSTER_NAME }}'
 
        - name: Set up Kubernetes tools
          uses: azure/setup-kubectl@v3
@@ -165,10 +135,34 @@ Using OpenID Connect (OIDC), GitHub Actions can securely authenticate with Azure
            traffic-split-method: pod
    ```
 
-4. **Replace placeholders**:
-   - Ensure that the `k8s/nginx-deployment.yml` and `k8s/nginx-service.yml` file paths exist in your repository.
+> **Note:** 
+     - Replace `myResourceGroup` with the name of your Azure Resource Group created in Lab2.
+      - Replace `myAKSCluster` with your AKS cluster created in Lab2.
+      - Ensure that the `k8s/nginx-deployment.yml` and `k8s/nginx-service.yml` file paths exist in your repository.
 
-## Step 4: Push the Changes to GitHub
+### Step 4: Change the Trigger Type of the workflow created in Lab2 to `workflow_dispatch`
+
+1. **In your repository**, navigate to the `.github/workflows` directory: 
+
+3. **Update the trigger for ```deploy-aks.yml``` YAML file** from `push` to `workflow_dispatch`:
+
+```yaml
+   name: Deploy AKS
+
+   on:
+     workflow_dispatch:
+
+  permissions:
+     id-token: write # Required for OIDC authentication
+     contents: read # Required to read repository contents
+     '
+     '
+     '
+```
+
+![Disable Lab2 Trigger](assets/lab2disabletrigger.png)
+
+## Step 5: Push the Changes to GitHub
 
 1. **Stage, commit, and push** your changes:
    ```bash

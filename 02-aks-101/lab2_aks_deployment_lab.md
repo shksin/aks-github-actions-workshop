@@ -6,7 +6,7 @@ This lab will guide you through the process of deploying an Azure Kubernetes Ser
 ## Prerequisites:
 1. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax. Ensure you have completed [Lab0-GitHub Actions 101](../01-gh-actions-101/readme.md) and have established successful connectivity between GitHub Actions and Azure.
 **Azure CLI**: Installed and configured on your local machine. [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-**Kubectl**: Installed on your local machine.
+**Kubectl**: Installed on your local machine. [How to install the Kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ---
 
@@ -16,18 +16,52 @@ This lab will guide you through the process of deploying an Azure Kubernetes Ser
    ```bash
    git clone <url of your repository>
 
-## Step 2: Create a GitHub Actions Workflow File
+## Step 2: Create Kubernetes Deployment Manifest
 
-1. **In your repository**, create a directory for GitHub Actions workflows:
+1. **In the root folder of your repository**, create a directory for Kubernetes manifests. Let's call it `k8s`:
    ```bash
-   mkdir -p .github/workflows
+   mkdir -p k8s
+   ```
+
+2. **Create a deployment YAML file**:
+   ```bash
+   touch k8s/deployment.yml
+   ```
+   
+3. **Edit the deployment YAML file** with the following content:
+
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: myapp-deployment
+   spec:
+     replicas: 2
+     selector:
+       matchLabels:
+         app: myapp
+     template:
+       metadata:
+         labels:
+           app: myapp
+       spec:
+         containers:
+         - name: myapp
+           image: nginx:latest
+           ports:
+           - containerPort: 80
+   ```
+
+## Step 3: Create a GitHub Actions Workflow File
+
+1. **In your repository**, navigate to the `.github/workflows` directory: 
 
 2. **Create a new YAML file**:
-   ```bash
-   touch .github/workflows/deploy-aks.yml
-   ```
-    *Alternatively, you can create the file manually in the  cloned folder.*
+    ```bash
+    touch .github/workflows/deploy-aks.yml
+    ```
 
+  *Alternatively, you can create the file manually in the `.github/workflows` directory*
 
 3. **Edit the YAML file** with the following content:
 
@@ -91,46 +125,12 @@ This lab will guide you through the process of deploying an Azure Kubernetes Ser
            kubectl apply -f k8s/deployment.yml
    ```
 
-      > **Note:** Replace `myResourceGroup` with your desired resource group name.
-      Replace `myAKSCluster` with your desired AKS cluster name.
-      Provide the correct `LOCATION` for your Azure region.
+      > **Note:** 
+      - Replace `myResourceGroup` with your desired resource group name.
+      - Replace `myAKSCluster` with your desired AKS cluster name.
+      - Provide the correct `LOCATION` for your Azure region.
+      - Ensure that the `k8s/deployment.yml`file paths exist in your repository.
 
-
-## Step 3: Create Kubernetes Deployment Manifest
-
-1. **In the root folder of your repository**, create a directory for Kubernetes manifests. Let's call it `k8s`:
-   ```bash
-   mkdir -p k8s
-   ```
-
-2. **Create a deployment YAML file**:
-   ```bash
-   touch k8s/deployment.yml
-   ```
-
-3. **Edit the deployment YAML file** with the following content:
-
-   ```yaml
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: myapp-deployment
-   spec:
-     replicas: 2
-     selector:
-       matchLabels:
-         app: myapp
-     template:
-       metadata:
-         labels:
-           app: myapp
-       spec:
-         containers:
-         - name: myapp
-           image: nginx:latest
-           ports:
-           - containerPort: 80
-   ```
 
 ## Step 4: Push the Changes to GitHub
 
