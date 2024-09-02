@@ -3,9 +3,10 @@
 ## [Workshop #1 - GitHub Actions 101](01-gh-actions-101/readme.md)
 
 This is introduction level (101) workshop for those of you who are not familiar with GitHub Actions. This workshop covers the fundamentals of using GitHub Actions and you will learn how to:
- * How to setup GitHub Actions workflow
- * Run a simple 'hello-world' output task using GitHub Actions
- * Caution: Once you use GitHub Actions, you get addicted to it :)
+ * Setup GitHub Actions workflow
+ * Authenticate to Azure using OpenID Connect (OIDC) authentication.
+ * Run some basic Azure CLI/Powershell commands to validate successful login.
+> **Caution:**: Once you use GitHub Actions, you get addicted to it :)
 
  ## [Workshop #2 - Azure Kubernetes Service 101](02-aks-101/readme.md)
 
