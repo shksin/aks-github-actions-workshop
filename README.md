@@ -1,6 +1,6 @@
 # AKS with GitHub Actions Workshop
 
-## [Workshop #1 - GitHub Actions 101](lab1-azure-oidc-login.md)
+## [Workshop #1 - Getting Started with GitHub Actions](01-gh-actions-101/lab1-azure-oidc-login.md)
 
 This is introduction level (101) workshop for those of you who are not familiar with GitHub Actions. This workshop covers the fundamentals of using GitHub Actions and you will learn how to:
  * Setup GitHub Actions workflow
@@ -8,7 +8,7 @@ This is introduction level (101) workshop for those of you who are not familiar 
  * Run some basic Azure CLI/Powershell commands to validate successful login.
 > **Caution:**: Once you use GitHub Actions, you get addicted to it :)
 
- ## [Workshop #2 - Create Kubernetes Cluster using GitHub Actions](02-aks-101/lab2_aks_deployment_lab.md)
+ ## [Workshop #2 - Create an AKS Cluster using GitHub Actions](02-aks-101/lab2_aks_deployment_lab.md)
 
 This is introduction level (101) workshop for those of you who are new to AKS. We expect that you have some basic understanding of containerization concepts and know what container and container images are. This workshop covers the basics of Azure Kubernetes Service and you will learn how to
  * Provision a basic AKS cluster using GitHub Actions
