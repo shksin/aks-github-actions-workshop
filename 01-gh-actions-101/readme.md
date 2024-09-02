@@ -54,6 +54,20 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 
     ![Add Workflow](assets/setupworkflow.png)
 
-6. **Create a new workflow file and add copy the content of the yaml file in following lab to authenticate GitHub Actions workflow with Azure:**
+6. **Create a new workflow file and add copy the content of the yaml file in following lab to authenticate GitHub Actions workflow with Azure**
 
     * [Lab-01](00-azure-oidc-login.yml):GitHub Actions workflow to authenticate to Azure using OIDC
+
+    _Commit the changes to the repository and navigate to the Actions tab to see the workflow in action_
+
+
+7. **Navigate to the Actions tab to select the workflow and trigger the workflow manually**
+
+    ![Manual Workflow Tab](assets/manualworkflow%20trigger.png)
+
+
+8. **Navigate to the workflow run to see the logs and verify that workflow has authenticated with Azure and has run the CLI and PowerShell scripts successfully: **
+
+    ![Workflow Logs](assets/SuccessfulWorkflow.png)
+
+
