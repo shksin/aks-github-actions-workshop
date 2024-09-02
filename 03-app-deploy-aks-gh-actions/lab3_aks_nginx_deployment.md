@@ -111,17 +111,24 @@ This lab will guide you through the process of deploying an Nginx application to
            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
            enable-AzPSSession: true
 
+        name: Set up Kubernetes tools
+         uses: azure/setup-kubectl@v3
+         with:
+           version: 'latest'
+
+       - name: Setup kubelogin
+         uses: azure/use-kubelogin@v1
+         with:
+          kubelogin-version: 'v0.0.26'
+       
        - name: Set AKS context
          id: set-context
          uses: azure/aks-set-context@v3
          with:
           resource-group: '${{ env.RESOURCE_GROUP }}' 
           cluster-name: '${{ env.AKS_CLUSTER_NAME }}'
-
-       - name: Set up Kubernetes tools
-         uses: azure/setup-kubectl@v3
-         with:
-           version: 'latest'
+          admin: 'false'
+          use-kubelogin: 'true' 
 
        - name: Deploy to AKS
          uses: azure/k8s-deploy@v3
