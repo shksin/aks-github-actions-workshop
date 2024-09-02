@@ -5,7 +5,7 @@ permissions:
   id-token: write # Require write permission to Fetch an OIDC token.
       
 jobs: 
-  test:
+  azure-oidc-login:
     runs-on: ubuntu-latest
     steps:
     - name: Azure Login
