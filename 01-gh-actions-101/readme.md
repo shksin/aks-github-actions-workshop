@@ -40,7 +40,7 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 4. **Configure a Federated Identity Credential**  
    Set up a federated identity credential on the Microsoft Entra application to trust tokens issued by GitHub Actions for your GitHub repository.
 
-    ![Assign Role Screenshot](https://example.com/image-link.png)
+    ![Assign Role Screenshot](assets/federated%20credentials.png)
 
 5. **Fetch values stored in Step 2 and add them as Secrets to the GitHub Repo as following: **
    - *AZURE_CLIENT_ID*
@@ -48,12 +48,12 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
    - *AZURE_TENANT_ID*
 
 
-   ![SelectClientId](assets/GHActionsSecret.png.png)
+   ![SelectClientId](assets/GHActionsSecret.png)
 
 6. **Navigate to your GitHub Repository, select Action from the top menu and Add a workflow file:**
 
     ![Add Workflow](assets/setupworkflow.png)
 
-6. **Create a new workflow file and add copy the content of the following yaml file that creates a workdflow to login to Azure using OIDC:**
+6. **Create a new workflow file and add copy the content of the yaml file in following lab to authenticate GitHub Actions workflow with Azure:**
 
-    * [GitHub Actions workflow to connect to Azure using OIDC](00-azure-oidc-login.yml) - 
+    * [Lab-01](00-azure-oidc-login.yml):GitHub Actions workflow to authenticate to Azure using OIDC
