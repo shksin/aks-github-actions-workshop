@@ -90,6 +90,8 @@ This lab will guide you through the process of deploying an Nginx application to
    permissions:
      id-token: write # Required for OIDC authentication
      contents: read # Required to read repository contents
+     actions: read # Required for GitHub Actions
+     checks: write # Required for status checks
 
    env:
       RESOURCE_GROUP: myResourceGroup
