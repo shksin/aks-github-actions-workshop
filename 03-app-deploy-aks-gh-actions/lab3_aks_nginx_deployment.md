@@ -5,9 +5,9 @@ This lab will guide you through the process of deploying an Nginx application to
 
 ## Prerequisites:
 1. **Basic Knowledge**: Familiarity with Kubernetes, GitHub Actions, and YAML syntax. Ensure you have completed [Lab0-GitHub Actions 101](../01-gh-actions-101/readme.md) and have established successful connectivity between GitHub Actions and Azure.
-**Azure CLI**: Installed and configured on your local machine. [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-**Kubectl**: Installed on your local machine. [How to install the Kubectl](https://kubernetes.io/docs/tasks/tools/)
-
+1. **Azure CLI**: Installed and configured on your local machine. [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+1. **Kubectl**: Installed on your local machine. [How to install the Kubectl](https://kubernetes.io/docs/tasks/tools/)
+1. **A cluster**: E.g. a deployment of [Lab2](../02-aks-101/lab2_aks_deployment_lab.md)
 ---
 
 ## Step 1: Create a Kubernetes Deployment Manifest for Nginx
