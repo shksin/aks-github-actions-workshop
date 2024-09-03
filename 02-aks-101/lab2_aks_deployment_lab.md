@@ -193,7 +193,7 @@ If you see an error like this
 
 1. **Delete the Resource Group** (if no longer needed):
    ```bash
-   az group delete --name $RESOURCE_GROUP --yes --no-wait
+   az group delete --name myResourceGroup  --yes --no-wait
    ```
 
 ---
