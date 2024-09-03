@@ -176,11 +176,18 @@ This lab will guide you through the process of deploying an Azure Kubernetes Ser
      kubectl get pods
      ```
 
-3. **Expose the Deployment (Optional)**:
+5. **Expose the Deployment (Optional)**:
    - To access the application, you may want to expose it as a service:
      ```bash
      kubectl expose deployment myapp-deployment --type=LoadBalancer --name=myapp-service
      ```
+
+### Troubleshooting
+If you see an error like this 
+<img width="1328" alt="image" src="https://github.com/user-attachments/assets/96b9f279-7e00-4704-98cc-6b279f47e457">
+
+**Fix:** [register the resource provider](https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-register-resource-provider?tabs=azure-cli#symptom) as per the docs
+
 
 ## Step 6: Clean Up Resources
 

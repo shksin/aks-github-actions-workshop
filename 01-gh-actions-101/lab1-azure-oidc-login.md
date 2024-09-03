@@ -24,7 +24,7 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 
 2. **Obtain the Following Values:**
    - *Client ID*
-   - *Subscription ID*
+   - *Subscription ID* - This is the subscription you will use to deploy your resources later
    - *Directory (tenant) ID*
 
    ![SelectClientId](assets/select-clientid-tenantId.png)
