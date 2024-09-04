@@ -22,7 +22,7 @@ This workshop covers the basics of Azure Kubernetes Service and make you familia
  * Deploy an Nginx application the AKS Cluster utilizing the `@azure/k8s-deploy` module in GitHub Actions workflow.
  * Expose Ngixn deployment as a service to access the application
 
- ## [Lab #5 - Publish and deploy an application from Azure Container Registry (ACR) to AKS (Azure Kubernetes Service) using ```@azure/k8s-deploy``` module in GitHub Actions Workflow](04-app-deploy-acr-aks/lab4_acr_aks_deployment.md)
+ ## [Lab #4 - Publish and deploy an application from Azure Container Registry (ACR) to AKS (Azure Kubernetes Service) using ```@azure/k8s-deploy``` module in GitHub Actions Workflow](04-app-deploy-acr-aks/lab4_acr_aks_deploy.md)
 
 This workshop covers the basics of Azure Kubernetes Service and make you familiar with using GitHub Actions for AKS deployments. You will learn how to:
  * Build a Docker image and push it to Azure Container Registry (ACR) using GitHub Actions  

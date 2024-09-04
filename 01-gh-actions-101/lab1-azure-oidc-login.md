@@ -12,11 +12,15 @@ In this lab, you will learn how toget started with GitHub Actions by creating an
 To use the Azure Login action with OIDC, you need to configure a federated identity credential on a Microsoft Entra application or a user-assigned managed identity. In this lab we will look at the Microsoft Entra application approach.
 
 ### Set up a GitHub Repository for the Lab
-Follow the steps below to fork the given GitHub Repository [KCD-AKS-GitHubActions-Workshop](https://github.com/shksin/kcd-gha-aks-workshop) 
+Follow the steps below to fork the given GitHub Repository [KCD-AKS-GitHubActions-Workshop](https://github.com/shksin/kcd-gha-aks-workshop)
+## steps to fork the repository
+1. Navigate to the [KCD-AKS-GitHubActions-Workshop](https://github.com/shksin/kcd-gha-aks-workshop)
+2. Click on the Fork button on the top right corner of the page.
+3. Select your GitHub account to fork the repository to your account.
  - [How to Fork a GitHub Repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo#forking-a-repository).
 
 
-### Microsoft Entra Application
+### Setup a Microsoft Entra Application
 
 1. **Create a Microsoft Entra Application**  
    You can create a Microsoft Entra application with a service principal using Azure Portal : 

@@ -36,6 +36,7 @@ $ docker run --name my-app -d -p 8080:8080 python-flask-docker
 ### Verify the running container
 visit http://localhost:8080
 
+[![Python Flask App](assets/localimage.png)
 
 
 ## Step 2: Create an Azure Container Registry (ACR)
@@ -44,27 +45,27 @@ visit http://localhost:8080
    - Add a new workflow file to your repository in the `.github/workflows` directory called `deploy-acr-aks.yml`:
 
      ```yaml
-    name: Create Azure Container Registry
+     name: Create Azure Container Registry
 
-    on:
+     on:
       push:
         branches:
           - "**"
         paths: 
           - '.github/workflows/deploy-acr-aks.yml'
 
-    permissions:
+     permissions:
         id-token: write # Require write permission to Fetch an OIDC token.
         contents: read # Required to read repository contents
         actions: read # Required for GitHub Actions
         checks: write # Required for status checks
 
-    env:
+     env:
         RESOURCE_GROUP: myResourceGroup
         AKS_CLUSTER_NAME: myAKSCluster
         ACR_NAME: myContainerRegistry
 
-    jobs:
+     jobs:
         create-acr:
           runs-on: ubuntu-latest
 
@@ -85,10 +86,10 @@ visit http://localhost:8080
               azcliversion: latest
               inlineScript: |
                 az acr create --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.ACR_NAME }} --sku Basic
-     ```
+      ```
 
    > **Note:** 
-      - Replace `myResourceGroup` with the name of your Azure Resource Group created in Lab2.
+     - Replace `myResourceGroup` with the name of your Azure Resource Group created in Lab2.
       - Replace `myAKSCluster` with your AKS cluster created in Lab2.
       - Replace `mycontainerregistry` with the desired name for your Azure Container Registry.
 
@@ -102,7 +103,7 @@ visit http://localhost:8080
    - Enable Admin Login and copy container registry's login server name,  username and password.
      ![ACR](assets/acr-creds.png)
 
-   - Store the ACR_ as GitHub Secrets.
+   - Store the ACR_LOGIN_SERVER, ACR_USERNAME, ACR_PASSWORD as GitHub Secrets.
      ![ACR](assets/acr-creds-ghactions.png)
 
   
@@ -111,10 +112,11 @@ visit http://localhost:8080
 1. **AcrPush Role Assignment**
    - Navigate to the Azure Container Registry in the Azure portal.
    - Assign the `AcrPush` role to the AppRegistration created in Lab1 on the Azure Container Registry. This will allow the GitHub Actions workflow to publish docker image to the ACR.
-   [![Assign Role](assets/acr-addrole-1.png)](assets/acr-addrole-2.png)(assets/acr-addrole-3.png)
+   ![Assign Role1](assets/acr-addrole-1.png) !!![Assign Role2](assets/acr-addrole-2.png)!![Assign Role3](assets/acr-addrole-3.png)
 
 2. **Update the Workflow file to Build, and Push the Image to ACR created above**:
    - Update the workflow file `.github/workflows/deploy-acr-aks.yml` and add the following step after `Create Azure Container Registry` step:
+
 
      ```yaml
      - name: Docker build and push ACR
@@ -130,7 +132,7 @@ visit http://localhost:8080
 
 3. **Verify that the docker image is published to the Azure Container Registry**:
    - Navigate to your ACR in Azure Portal and verify that the image is published.
-     ![ACR](assets/repo-published.png.png)
+     ![ACR](assets/repo-published.png)
 
 
 ## Step 3: Deploy Image from ACR to AKS Using GitHub Actions
@@ -148,31 +150,32 @@ visit http://localhost:8080
 3. **Edit the deployment YAML file** with the following content:
 
    ```yaml
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: myapp
-    labels:
-      app: myapp
-  spec:
-    replicas: 2
-    selector:
-      matchLabels:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: myapp
+      labels:
         app: myapp
-    template:
-      metadata:
-        labels:
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
           app: myapp
-      spec:
-        containers:
-        - name: myapp
-          image: <myContainerRegistry>.azurecr.io/myapp
-          ports:
-          - name:  http
-            containerPort: 8080
-            protocol: TCP
-   ```
-   > **Note:** 
+      template:
+        metadata:
+          labels:
+            app: myapp
+        spec:
+          containers:
+          - name: myapp
+            image: <myContainerRegistry>.azurecr.io/myapp
+            ports:
+            - name:  http
+              containerPort: 8080
+              protocol: TCP
+      ```
+
+    > **Note:** 
       - Replace `myContainerRegistry` with the name of your Azure Container Registry
 
 4. **Create a service YAML file** to expose the deployment of `myapp` as a service:
@@ -183,21 +186,21 @@ visit http://localhost:8080
 5. **Edit the service YAML file** with the following content:
 
    ```yaml
-  kind: Service
-  apiVersion: v1
-  metadata:
-    name:  myapp-svc
-  spec:
-    selector:
-      app:  myapp
-    type:  LoadBalancer
-    ports:
-    - name:  http
-      port:  80
-      targetPort: 8080
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name:  myapp-svc
+    spec:
+      selector:
+        app:  myapp
+      type:  LoadBalancer
+      ports:
+      - name:  http
+        port:  80
+        targetPort: 8080
    ```
 
-2, **Update the Workflow file to Build, and Push the Image to ACR created above**:
+2 **Update the Workflow file to Build, and Push the Image to ACR created above**:
    - Update the workflow file `.github/workflows/deploy-acr-aks.yml` and add the following steps after `Docker build and push ACR` step:
 
      ```yaml
