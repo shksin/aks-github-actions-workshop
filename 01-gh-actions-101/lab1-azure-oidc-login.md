@@ -12,13 +12,16 @@ In this lab, you will learn how toget started with GitHub Actions by creating an
 To use the Azure Login action with OIDC, you need to configure a federated identity credential on a Microsoft Entra application or a user-assigned managed identity. In this lab we will look at the Microsoft Entra application approach.
 
 ### Set up a GitHub Repository for the Lab
-Follow the steps below to set up a GitHub repository [___aks-github-actions-workhop___] for the lab: [Create a GitHub Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/quickstart-for-repositories).
+Follow the steps below to fork the given GitHub Repository [KCD-AKS-GitHubActions-Workshop](https://github.com/shksin/kcd-gha-aks-workshop) 
+ - [How to Fork a GitHub Repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo#forking-a-repository).
 
 
 ### Microsoft Entra Application
 
 1. **Create a Microsoft Entra Application**  
    You can create a Microsoft Entra application with a service principal using Azure Portal : 
+    - Navigate to the Azure Portal and search for 'Azure EntraId'
+    - Click on 'App Registrations' and then 'New Registration'
 
    ![Create App Registration](assets/create-app-registration.png)
 
@@ -31,22 +34,24 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 
    > **Note:** Make sure to store these values securely, as they will be used later in the GitHub Actions workflow to authenticate to Azure.
 
-3. **Configure a Federated Identity Credential**  
-   Set up a federated identity credential on the Microsoft Entra application to trust tokens issued by GitHub Actions for your GitHub repository.
+3. **Configure a Federated Identity Credential**
+      Set up a federated identity credential on the Microsoft Entra application to trust tokens issued by GitHub Actions for your GitHub repository.
 
-    ![Assign Role Screenshot](assets/federated%20credentials.png)
+      Navigate to the 'Certificates & Secrets' section of the App Registration created above and add a new Federated Identity Credential.
+    ![Fed Cred Menu](assets/federated%20credentials%20menu.png)
+    ![Fed Cred](assets/federated%20credentials.png)
 
-4. **Assign 'Contributor' Role to the Service Principal**  
-   Use the Azure Portal, assign 'Contributor' role to your service principal.
-
+4. **Assign 'Contributor' Role to the Microsoft Entra Application for the Subscription**  
+   Use the Azure Portal, assign 'Contributor' role to the Microsoft Entra Application created above for your Azure Subscription.
+    - Select your Azure Subscription
+    - Click on 'Access Control (IAM)' and then 'Add Role Assignment'
    ![Assign Role](assets/AddContributorRoleToSubscription.png)
 
 
-5. **Fetch values stored in Step 2 and add them as Secrets to the GitHub Repo as following: **
+5. **Fetch values stored in Step 2 and add them as Secrets to the GitHub Repo as following:**
    - *AZURE_CLIENT_ID*
    - *AZURE_SUBSCRIPTION_ID*
    - *AZURE_TENANT_ID*
-
 
    ![SelectClientId](assets/GHActionsSecret.png)
 
@@ -54,7 +59,7 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 
     ![Add Workflow](assets/setupworkflow.png)
 
-6. **Create a new workflow file and add copy the content of the yaml file in following lab to authenticate GitHub Actions workflow with Azure**
+7. **Create a new workflow file and add copy the content of the yaml file in following lab to authenticate GitHub Actions workflow with Azure**
 
 ```yaml
 name: Run Azure Login with OpenID Connect
