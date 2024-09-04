@@ -149,7 +149,7 @@ This lab will guide you through the process of deploying an Nginx application to
       - Replace `myAKSCluster` with your AKS cluster created in Lab2.
       - Ensure that the `k8s/nginx-deployment.yml` and `k8s/nginx-service.yml` file paths exist in your repository.
 
-### Step 4: Change the Trigger Type of the workflow created in Lab2 to `workflow_dispatch`
+### Step 4: Change the Trigger Type of the `deploy-aks` workflow file created in Lab2 to `workflow_dispatch`
 
 1. **In your repository**, navigate to the `.github/workflows` directory: 
 

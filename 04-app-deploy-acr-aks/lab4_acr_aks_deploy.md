@@ -39,7 +39,29 @@ visit http://localhost:8080
 [![Python Flask App](assets/localimage.png)
 
 
-## Step 2: Create an Azure Container Registry (ACR)
+## Step 2: Change the Trigger Type of the `deploy-nginx` workflow file created in Lab2 to `workflow_dispatch`
+
+1. **In your repository**, navigate to the `.github/workflows` directory: 
+
+3. **Update the trigger for ```deploy-nginx.yml``` YAML file** from `push` to `workflow_dispatch`:
+
+```yaml
+   name: Deploy Nginx to AKS
+
+   on:
+     workflow_dispatch:
+
+  permissions:
+     id-token: write # Required for OIDC authentication
+     contents: read # Required to read repository contents
+     '
+     '
+     '
+```
+
+![Disable Lab3 Trigger](assets/disablelab3_trigger.png.png)
+
+## Step 3: Create an Azure Container Registry (ACR)
 
 1. **Create an ACR via GitHub Actions**:
    - Add a new workflow file to your repository in the `.github/workflows` directory called `deploy-acr-aks.yml`:
@@ -48,11 +70,9 @@ visit http://localhost:8080
      name: Create Azure Container Registry
 
      on:
-      push:
-        branches:
-          - "**"
-        paths: 
-          - '.github/workflows/deploy-acr-aks.yml'
+     push:
+       branches:
+         - main
 
      permissions:
         id-token: write # Require write permission to Fetch an OIDC token.
@@ -107,7 +127,7 @@ visit http://localhost:8080
      ![ACR](assets/acr-creds-ghactions.png)
 
   
-## Step 3: Build and Push the Docker Image to ACR Using GitHub Actions
+## Step 4: Build and Push the Docker Image to ACR Using GitHub Actions
 
 1. **AcrPush Role Assignment**
    - Navigate to the Azure Container Registry in the Azure portal.
@@ -135,7 +155,7 @@ visit http://localhost:8080
      ![ACR](assets/repo-published.png)
 
 
-## Step 3: Deploy Image from ACR to AKS Using GitHub Actions
+## Step 4: Deploy Image from ACR to AKS Using GitHub Actions
 
 1.**In your repository**, create a directory for Kubernetes manifests called `k8s` if it doesn't already exist.
    ```bash
@@ -236,7 +256,7 @@ visit http://localhost:8080
    - Commit and push the workflow file to the `main` branch. This will trigger the GitHub Actions workflow to deploy the application to AKS.
 
 
-## Step 4: Verify the Deployment
+## Step 5: Verify the Deployment
 
 1. **Verify the Deployment**:
    - Check the status of your deployment:
