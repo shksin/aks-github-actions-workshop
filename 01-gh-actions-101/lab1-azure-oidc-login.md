@@ -31,15 +31,16 @@ Follow the steps below to set up a GitHub repository [___aks-github-actions-work
 
    > **Note:** Make sure to store these values securely, as they will be used later in the GitHub Actions workflow to authenticate to Azure.
 
-3. **Assign 'Contributor' Role to the Service Principal**  
+3. **Configure a Federated Identity Credential**  
+   Set up a federated identity credential on the Microsoft Entra application to trust tokens issued by GitHub Actions for your GitHub repository.
+
+    ![Assign Role Screenshot](assets/federated%20credentials.png)
+
+4. **Assign 'Contributor' Role to the Service Principal**  
    Use the Azure Portal, assign 'Contributor' role to your service principal.
 
    ![Assign Role](assets/AddContributorRoleToSubscription.png)
 
-4. **Configure a Federated Identity Credential**  
-   Set up a federated identity credential on the Microsoft Entra application to trust tokens issued by GitHub Actions for your GitHub repository.
-
-    ![Assign Role Screenshot](assets/federated%20credentials.png)
 
 5. **Fetch values stored in Step 2 and add them as Secrets to the GitHub Repo as following: **
    - *AZURE_CLIENT_ID*

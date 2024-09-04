@@ -22,31 +22,53 @@ This lab will guide you through the process of creating an Azure Container Regis
      name: Create Azure Container Registry
 
      on:
-       push:
-         branches:
-           - main
+  [workflow_dispatch]
 
-     jobs:
-       create-acr:
-         runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Require write permission to Fetch an OIDC token.
+      contents: read # Required to read repository contents
+      actions: read # Required for GitHub Actions
+      checks: write # Required for status checks
 
-         steps:
-         - name: Checkout code
-           uses: actions/checkout@v2
+    env:
+          RESOURCE_GROUP: myResourceGroup
+          AKS_CLUSTER_NAME: myAKSCluster
+          ACR_NAME: myACRName
 
-         - name: Log in to Azure
-           uses: azure/login@v1
-           with:
-             creds: ${{ secrets.AZURE_CREDENTIALS }}
+    jobs:
+          create-acr:
+            runs-on: ubuntu-latest
 
-         - name: Create Azure Container Registry
-           uses: azure/CLI@v1
-           with:
-             inlineScript: |
-               az acr create --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.ACR_NAME }} --sku Basic
+            steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+        
+            - name: Create Azure Container Registry
+              uses: azure/cli@v2
+              with:
+                azcliversion: latest
+                inlineScript: |
+                  az acr create --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.ACR_NAME }} --sku Basic
+
+            - name: Attach ACR to AKS
+              uses: azure/cli@v2
+              with:
+                azcliversion: latest
+                inlineScript: |
+                  az aks update --name ${{ env.AKS_CLUSTER_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --attach-acr ${{ env.ACR_NAME }}
      ```
 
-   - Replace `ACR_NAME` and `AZURE_RESOURCE_GROUP` with the appropriate secrets stored in your GitHub repository.
+   > **Note:** 
+      - Replace `myResourceGroup` with the name of your Azure Resource Group created in Lab2.
+      - Replace `myAKSCluster` with your AKS cluster created in Lab2.
+      - Replace `myACRName` with the desired name for your Azure Container Registry.
 
 2. **Run the Workflow**:
    - Commit and push the workflow file to the `main` branch. This will trigger the GitHub Actions workflow to create an ACR in your specified resource group.

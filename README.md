@@ -16,15 +16,21 @@ This is introduction level (101) workshop for those of you who are new to AKS. W
  * Verify the application deployment using ```kubectl``` commands
 
 
- ## [Lab #3 - Deploy an application to AKS using ```@azure/k8s-deploy``` module in GitHub Actions Workflow](03-app-deploy-aks-gh-actions/lab3_aks_nginx_deployment.md)
+ ## [Lab #3 - Deploy an application to AKS using ```@azure/k8s-deploy``` module in GitHub Actions Workflow](03-app-deploy-aks/lab3_aks_nginx_deployment.md)
 
 This workshop covers the basics of Azure Kubernetes Service and make you familiar with using GitHub Actions for AKS deployments. You will learn how to:  
  * Deploy an Nginx application the AKS Cluster utilizing the `@azure/k8s-deploy` module in GitHub Actions workflow.
  * Expose Ngixn deployment as a service to access the application
 
-## [Lab #4 (Optional) - Advanced AKS Scenarios with GitHub Actions](04-advanced-aks-with-gh-actions/readme.md) 
-This workshop covers the advanced scenarios of AKS with GitHub Actions. Each of the scenarios are independent and can be completed without any dependancy on each other. In this workshop you will learn how to: 
-    * Create an Azure Container Registry, Push an Image to It, and Deploy an App to AKS Using GitHub Actions
+ ## [Lab #5 - Publish and deploy an application from Azure Container Registry (ACR) to AKS (Azure Kubernetes Service) using ```@azure/k8s-deploy``` module in GitHub Actions Workflow](04-app-deploy-acr-aks/lab4_acr_aks_deployment.md)
+
+This workshop covers the basics of Azure Kubernetes Service and make you familiar with using GitHub Actions for AKS deployments. You will learn how to:
+ * Build a Docker image and push it to Azure Container Registry (ACR) using GitHub Actions  
+ * Deploy an App to AKS from ACR using GitHub Actions utilizing the `@azure/k8s-deploy` module in GitHub Actions workflow.
+
+## [Lab #5 (Optional) - Advanced AKS Scenarios with GitHub Actions](05-advanced-aks-with-gh-actions/readme.md) 
+This workshop covers the advanced scenarios of AKS with GitHub Actions. Each of the scenarios are independent and can be completed without any dependancy on each other. In this advanced lab you will learn how to: 
+    * 
     * Integrate Azure Key Vault with AKS Using GitHub Actions
     * Package and Deploy an App using Helm with GitHub Actions
     * Scale a Deployed App Using Horizontal Pod Autoscaler (HPA) with GitHub Actions using OIDC
