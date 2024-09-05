@@ -113,7 +113,7 @@ This lab will guide you through the process of deploying an Nginx application to
            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
            enable-AzPSSession: true
 
-        name: Set up Kubernetes tools
+       - name: Set up Kubernetes tools
          uses: azure/setup-kubectl@v3
          with:
            version: 'latest'
