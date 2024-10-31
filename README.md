@@ -38,3 +38,4 @@ This workshop covers the advanced scenarios of AKS with GitHub Actions. Each of 
  
 
  The workshops consists of 8 labs (4 Basic and 4 advanced) and estimated time is 2 hours.
+ Enjoy!!!!!
